@@ -101,7 +101,7 @@ def create_docs_tf_dict(index, query, DL):
         the function return dict {key:doc_id, value: dict {key:term, value: tf/doc_len}
     """
     doc_dic = {}
-    # hey
+    # changes
     for term in query:
         term_psl = read_posting_list(index, term)
         for doc_id, tf in term_psl:
