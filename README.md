@@ -1,6 +1,5 @@
-# IR_project
+# Information Retrieval Final Project
 
-Information Retrieval Final Project.
 In our final project in information retrieval we build a search engine for English Wikipedia. 
 The main purpose of the project is to create a main search function. 
 Given a query, our main search function finds top 100 relevant wikipedia pages sorted by the score calaulated in the function 'search'.
