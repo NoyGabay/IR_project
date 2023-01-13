@@ -1,7 +1,17 @@
 # IR_project
 
 Information Retrieval Final Project.
-In our final project in information retrieval we build a search engine for English Wikipedia.
+In our final project in information retrieval we build a search engine for English Wikipedia. 
+The main purpose of the project is to create a main search function. 
+Given a query, our main search function finds top 100 relevant wikipedia pages sorted by the score calaulated in the function 'search'.
+We used and calculated some Similarity Measures such as: 
+* cosine similarity tf-idf 
+* BM25
+* page view
+* page rank
+* binary search on web title
+* binary search on web anchor text.
+Our search based on the similarity measure BM25 function as her main measure, and in addition we the doc's title and page rank.  
 
 Description of the above file: 
 1. serarch_frontend: python file which contains all search functions our serach engine performs. Full documentation of each function can be found in the file.
@@ -19,4 +29,6 @@ Files that we use in the the project but not in the repository:
 5. postings_gcp: folder contains index on the text of document (built using inverted_index_gcp).
 6. postings_gcp_title: folder contains index on the title of document (built using inverted_index_gcp).
 7. postings_gcp_anchor: folder contains index on the anchor of document (built using inverted_index_gcp).
+
+
 
