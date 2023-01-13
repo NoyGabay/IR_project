@@ -11,6 +11,7 @@ We used and calculated some Similarity Measures such as:
 * page rank
 * binary search on web title
 * binary search on web anchor text.
+
 Our search based on the similarity measure BM25 function as her main measure, and in addition we the doc's title and page rank.  
 
 Description of the above file: 
@@ -30,5 +31,4 @@ Files that we use in the the project but not in the repository:
 6. postings_gcp_title: folder contains index on the title of document (built using inverted_index_gcp).
 7. postings_gcp_anchor: folder contains index on the anchor of document (built using inverted_index_gcp).
 
-
-
+When we finished the project we built an instange on google cloud virtual machines, where our search engine was public to get queries and was able to return answer to all 6 functions found in search_frontend, which also included our main search function -'search'.
