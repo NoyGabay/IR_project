@@ -1,7 +1,7 @@
 # Information Retrieval Final Project
 
 In our final project in information retrieval we build a search engine for English Wikipedia. 
-The main purpose of the project is to create a main search function. 
+The main purpose of the project is to create a search engine on the entire english wikipedia given all the corpus updated to August 2021. 
 Given a query, our main search function finds top 100 relevant wikipedia pages sorted by the score calaulated in the function 'search'.
 We used and calculated some Similarity Measures such as: 
 * cosine similarity tf-idf 
@@ -17,9 +17,9 @@ Description of the above file:
 1. serarch_frontend: python file which contains all search functions our serach engine performs. Full documentation of each function can be found in the file.
 2. search_backend: python file which contains all background logic and functionality that helped us implement all search functions.
 3. inverted_index_gcp: python file with implementation of Inverted Index.
-4. TODO : notebook we used to build text invertd index
-5. TODO : notebook we used to build title invertd index
-6. TODO : notebook we used to build anchor invertd index
+      - TODO : notebook we used to build text invertd index
+      - TODO : notebook we used to build title invertd index
+      - TODO : notebook we used to build anchor invertd index
 
 Files that we use in the the project but not in the repository:
 1. DL.plk: pkl file contains a dictionary mapping document ID to his lenght.
