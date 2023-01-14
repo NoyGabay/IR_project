@@ -9,9 +9,9 @@ We used and calculated some Similarity Measures such as:
 * page view
 * page rank
 * binary search on web title
-* binary search on web anchor text.
+* binary search on web anchor text
 
-Our search based on the similarity measure BM25 function as her main measure, and in addition we the doc's title and page rank.  
+Our search based on the similarity measure BM25 function as her main measure, and in addition we used the doc's title and page rank.  
 
 Description of the above file: 
 1. serarch_frontend: python file which contains all search functions our serach engine performs. Full documentation of each function can be found in the file.
