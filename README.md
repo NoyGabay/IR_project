@@ -17,9 +17,9 @@ Description of the above file:
 1. serarch_frontend: python file which contains all search functions our serach engine performs. Full documentation of each function can be found in the file.
 2. search_backend: python file which contains all background logic and functionality that helped us implement all search functions.
 3. inverted_index_gcp: python file with implementation of Inverted Index.
-4. TODO : notebook we used to build text invertd index
-5. TODO : notebook we used to build title invertd index
-6. TODO : notebook we used to build anchor invertd index
+4. text index creation and pr calculation : notebook we used to build text invertd index and calculate page rank values
+5. title index and dictionaries creation : notebook we used to build title invertd index and extra dictionaries
+6. anchor index creation: notebook we used to build anchor invertd index
 
 Files that we use in the the project but not in the repository:
 1. DL.plk: pkl file contains a dictionary mapping document ID to his lenght.
