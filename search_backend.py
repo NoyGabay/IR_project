@@ -18,6 +18,15 @@ MIN_PR = 0.1501208493870428  # belongs to doc_id 1404
 nltk.download('stopwords')
 
 def tokenize(text):
+    """
+    This function aims in tokenize a text into a list of tokens. Moreover, it filters stopwords.
+    -----------
+    Parameters:
+    text: text to tokenize.
+    -----------
+    Returns:
+    stopwords filtered list of tokens.
+    """
     english_stopwords = frozenset(stopwords.words('english'))
     corpus_stopwords = ["category", "references", "also", "external", "links",
                         "may", "first", "see", "history", "people", "one", "two",
@@ -29,10 +38,21 @@ def tokenize(text):
     return list_of_tokens
 
 
-def read_posting_list(inverted, w, index_name):
+def read_posting_list(inverted, w, index_loc):
+    """
+    This function returns the posting list of the word/term specified in the given inverted index.
+    -----------
+    Parameters:
+    inverted: inverted index file.
+    w: word/term that we want to get its posting list.
+    index_loc: location name of the inverted index file.
+    -----------
+    Returns:
+    posting list of the word/term specified.
+    """
     with closing(MultiFileReader()) as reader:
         locs = inverted.posting_locs[w]
-        b = reader.read(locs, inverted.df[w] * TUPLE_SIZE, index_name)
+        b = reader.read(locs, inverted.df[w] * TUPLE_SIZE, index_loc)
         posting_list = []
         for i in range(inverted.df[w]):
             doc_id = int.from_bytes(b[i * TUPLE_SIZE:i * TUPLE_SIZE + 4], 'big')
@@ -42,6 +62,17 @@ def read_posting_list(inverted, w, index_name):
 
 
 def doc_binary_search(index, query, index_loc):
+    """
+    This function returns a sorted list by the binary score of ALL doc_ids that query terms appears in.
+    -----------
+    Parameters:
+    index: inverted index file in which we want to search.
+    query: text representing the query in which we want to search.
+    index_loc: location name of the inverted index file.
+    -----------
+    Returns:
+    a sorted list by the binary score of ALL doc_ids that query terms appears in.
+    """
     dict_query_docs = {}
     for query_term in np.unique(tokenize(query)):  # if a query consist one term more than once, we will count it once
         try:
@@ -57,6 +88,17 @@ def doc_binary_search(index, query, index_loc):
 
 
 def cosine_similarity_tf_idf(index, tokenized_query, DL):
+    """
+    This function computes tfidf cosine similarity between the query and all the relevant docs in the index.
+    and returns a dictionary {key: doc_id, value: query-doc_id tfidf cosine similarity score}.
+    -----------
+    Parameters:
+    index: inverted index file in which we want to search.
+    tokenized_query: list of the query tokens.
+    DL: dictionary {key: doc_id, value: len of doc (in tokens)}.
+    -----------
+    Returns: a dictionary as follows: {key: doc_id, value: query-doc_id tfidf cosine similarity score}.
+    """
     cosine_dict = {}
     final_cosine_dict = {}
     sum_doc_squared = {}
@@ -90,14 +132,13 @@ def cosine_similarity_tf_idf(index, tokenized_query, DL):
 def get_top_n(sim_dict, N=3):
     """
     Sort and return the highest N documents according to the cosine similarity score.
-    Generate a dictionary of cosine similarity scores
+    Generate a dictionary of cosine similarity scores.
+    -----------
     Parameters:
-    -----------
-    sim_dict: a dictionary of similarity score as follows:
-                                                                key: document id (e.g., doc_id)
+    sim_dict: dictionary of similarity score as follows: {key: doc_id, value: score}
     N: Integer (how many documents to retrieve). By default N = 3
-    Returns:
     -----------
+    Returns:
     a ranked list of pairs (doc_id, score) in the length of N.
     """
     return sorted([(doc_id, score) for doc_id, score in sim_dict.items()], key=lambda x: x[1], reverse=True)[:N]
@@ -105,6 +146,18 @@ def get_top_n(sim_dict, N=3):
 
 #### merge function from assignment 4
 def merge_results(title_scores, BM25_scores, title_weight=0.6, bm25_weight=0.4):
+    """
+    this function merges the title_scores dict with the BM25_scores dict to one dict.
+    -----------
+    Parameters:
+    title_scores: dictionary of title scores as follows: {key: doc_id, value: title_score}
+    BM25_scores: dictionary of BM25 scores as follows: {key: doc_id, value: BM25_score}
+    title_weight: the weight we want to give to the title in the formula.
+    bm25_weight: the weight we want to give to the BM25 in the formula.
+    -----------
+    Returns:
+    a dictionary of merged scores as follows: {key: doc_id, value: merged_score}
+    """
     merged_results = {}  # dictionary {key: doc_id, value: weighted score}
     # iterate on title_scores
     for doc_id, score in title_scores.items():
@@ -124,13 +177,17 @@ def merge_results(title_scores, BM25_scores, title_weight=0.6, bm25_weight=0.4):
 
 def query_in_title_docs_norm(index, query):
     """
-    this function finds the most relevant docs according to title
+    this function finds the most relevant docs according to title and returns a normed sorted dictionary as follows:
+    {key: doc_id, value: number of tokens from the query that found in the doc's title / len of query}
+    the sort is by the values.
+    -----------
     parameters :
-                index - title index
-                query - list of tokens represent the query
+    index: title inverted index file.
+    query: list of tokens represent the query.
+    -----------
     return:
-                sorted dictionary {key: doc_id, value: number of tokens from the query that found in the doc's title / len of query}
-                sorting is by value of the dictionary
+    a sorted dictionary as follows: {key: doc_id, value: number of tokens from the query that found in the doc's title / len of query}
+    the sort is by the values.
     """
     dict_query_docs = {}
     query_len = len(query)
@@ -149,7 +206,15 @@ def query_in_title_docs_norm(index, query):
 
 
 def normalize_dict(myDict):
-    # normalize values of the dictionary using Min-Max normalization so that all scores are between 0-1
+    """
+    this function normalize the values of the dictionary using Min-Max normalization so that all scores are between 0-1
+    -----------
+    parameters :
+    myDict: dictionary we want to normalize.
+    -----------
+    return:
+    dictionary with normalized values.
+    """
     if myDict == {}:
         return {}
     normalized = {}
@@ -165,12 +230,15 @@ def normalize_dict(myDict):
 def new_search_using_BM25(query_tokens, index, DL_dict):
     """
     this function calculates BM25 for all relevant docs to a given query,
-    all parameters of the BM25 equation are init in the top of the file BM25_b, BM25_K1 and can be set there
-
-    :param query_tokens: list of tokens represent the query
-    :param index: relevant index to search - textIndex
-    :param DL_dict: dictionary {key: doc_id, value: len od doc (in tokens)}
-    :return: sorted dictionary by BM25 score {key: doc_id, value: BM25 score}
+    all parameters of the BM25 equation are init in the top of the file BM25_b, BM25_K1 and can be set there.
+    -----------
+    Parameters:
+    query_tokens: list of tokens represent the query.
+    index: relevant index to search - textIndex.
+    DL_dict: dictionary {key: doc_id, value: len of doc (in tokens)}.
+    -----------
+    Returns:
+    a sorted dictionary by BM25 score as follows: {key: doc_id, value: BM25 score}.
     """
     scores = {}  # dict of {key: doc_id, value: BM25 value given a query}
     idf = calc_idf(query_tokens, index)
@@ -190,20 +258,17 @@ def new_search_using_BM25(query_tokens, index, DL_dict):
             scores[doc_id] += (numerator / denominator)
     sorted_scores = {key: value for key, value in
                      sorted(scores.items(), key=lambda item: item[1], reverse=True)}
-    # dictionary of {key: doc_id, value: BM25 value given a query}, sorted by BM score
     return sorted_scores
 
 def calc_idf(list_of_tokens, index):
     """
     This function calculate the idf values according to the BM25 idf formula for each term in the query.
+    -----------
     Parameters:
+    query: list of token representing the query. For example: ['look', 'blue', 'sky'].
     -----------
-    query: list of token representing the query. For example: ['look', 'blue', 'sky']
     Returns:
-    -----------
-    idf: dictionary of idf scores. As follows:
-                                                key: term
-                                             value: bm25 idf score
+    a dictionary of idf scores as follows: {key: term, value: bm25 idf score}.
     """
     idf = {}
     for term in list_of_tokens:
