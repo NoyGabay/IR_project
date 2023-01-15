@@ -13,15 +13,15 @@ We used and calculated some Similarity Measures such as:
 
 Our search based on the similarity measure BM25 function as her main measure, and in addition we used the doc's title and page rank.  
 
-Description of the above file: 
-1. serarch_frontend: python file which contains all search functions our serach engine performs. Full documentation of each function can be found in the file.
-2. search_backend: python file which contains all background logic and functionality that helped us implement all search functions.
-3. inverted_index_gcp: python file with implementation of Inverted Index.
-4. text index creation and pr calculation : notebook we used to build text invertd index and calculate page rank values
-5. title index and dictionaries creation : notebook we used to build title invertd index and extra dictionaries
-6. anchor index creation: notebook we used to build anchor invertd index
+## Description of the above file: 
+1. *serarch_frontend*: python file which contains all search functions our serach engine performs. Full documentation of each function can be found in the file.
+2. *search_backend*: python file which contains all background logic and functionality that helped us implement all search functions.
+3. *inverted_index_gcp*: python file with implementation of Inverted Index.
+4. *text index creation and pr calculation*: notebook we used to build text invertd index and calculate page rank values
+5. *title index and dictionaries creation*: notebook we used to build title invertd index and extra dictionaries
+6. *anchor index creation*: notebook we used to build anchor invertd index
 
-Files that we use in the the project but not in the repository:
+## Files that we use in the the project but not in the repository:
 1. DL.plk: pkl file contains a dictionary mapping document ID to his lenght.
 2. doc_to_title.pkl: pkl file contains a dictionary mapping document ID to the document's title.
 3. pageviews.pkl: pkl file contains a dictionary mapping document ID to his page view, which is a value represents the request for the content of a web page (relevant to the month of August 2021, more then 10.7 million viewed atricles).
