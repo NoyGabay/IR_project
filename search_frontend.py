@@ -80,7 +80,7 @@ def search():
             if doc_id in pr_dict.keys():
                 new_scores[doc_id] = score + (pr_dict.get(doc_id) / norm_factor)
 
-        res1 = get_top_n(new_scores, 100)
+        res1 = get_top_n(new_scores, 20)
         res = [(item[0], docID_title_dict.get(item[0], 'NOT FOUND')) for item in res1]
     else:
         res = []
